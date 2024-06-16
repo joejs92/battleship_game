@@ -24,11 +24,12 @@ DOM. Should be only one point in the function that
 interacts with the outside world.
 */
 class Gameboard{
-    constructor(size){
+    constructor(size, name){
         this.size = size;
-        this.shipCoordinates = [[[5,5],'Any']];
+        this.name = name;
+        this.shipCoordinates = [];
         this.misses = [];
-        this.guesses = [[3,3]];
+        this.guesses = [];
         this.carrier = new Ship('carrier',5);
         this.battleship = new Ship('battleship',4);
         this.destroyer = new Ship('destroyer',3);
@@ -178,8 +179,8 @@ class Gameboard{
             this.guesses.push(value);
         }
         if(attack == true) {
-            //Need a way to get the ship that has been
-            //hit and add to the hit counter.
+            //Should have an event notification to show
+            //either hit or miss.
             for(let i = 0; i < this.shipCoordinates.length; i++){
                 if(value[0]== this.shipCoordinates[i][0][0] && value[1] == this.shipCoordinates[i][0][1]){
                     this.ships[this.shipCoordinates[i][1]].currentHits += 1;
@@ -205,9 +206,29 @@ class Gameboard{
     }
 }
 
+class Player{
+    constructor(playerName){
+        this.playerName = playerName;
+        this.playerGameboard = new Gameboard(10);
+    };
+    /*I'm not entirely sure what to put into this class.
+    The guide about the project is vague at this part. 
+    ***Note to future-self in case I get weird ideas:
+    Sending an attack isn't necessary. Both player's 
+    boards will be displayed, so clicking on the other 
+    player's board will just have the other player 
+    receive an attack. Duh. The big purpose of this class
+    may be just to make gameboard display easier. For now
+    just assume that the opponent is the computer. In the
+    future it can be modified for two players.***
+    */
+    placePlayerShip(shipType,coordinate,direction){
+        this.playerGameboard.setCurrentShip(shipType);
+        this.playerGameboard.placeShip(coordinate,direction);
+    };
+}
 
-
-const gameboard = new Gameboard(10);
+const gameboard = new Gameboard(10,"computer");
 //gameboard.setCurrentShip("carrier");
 //console.log(gameboard.guesses);
 module.exports = gameboard;
