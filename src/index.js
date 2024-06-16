@@ -18,37 +18,17 @@ class Ship{
     }
 }
 //const playerCarrier = new Ship('carrier', 5);
-/* For the gameboard class I should be more attentive with
-creating good tests. First, what do we need?
-1. To generate a gameboard. Default size is 10 x 10.
-Just have the ship's coordinates, the misses, and the
-guesses as separate arrays.
-2. A function that places ships. Should have one input for
-where the bow of the ship will go, and another for which
-direction the stern will be pointing. Should also have
-which ship is being placed as an input.
-3. A function to check if ship placement is valid. It will
-make sure that no part of the ship will be off the board
-when placed, and that the ship being placed will not
-occupy the same spaces as a ship already placed.
-Should throw an error message or something if placement 
-is invalid.
-4. A receiveAttack function that takes a pair of 
-coordinates, determines whether the attack hit a ship, 
-then sends a hit to the right ship, or records the miss.
-Should take the coordinates as an input. First check if
-the coordinate has already been guessed. If not, see if
-it hits or misses. After that, send the coordinates to 
-the guess history array. 
-5. A function that reports on if all of the player's 
-ships have been sunk.
+/* Gameboard works fine. Lots of room for refactoring and
+improvement. Will be interesting to integrate with the 
+DOM. Should be only one point in the function that 
+interacts with the outside world.
 */
 class Gameboard{
     constructor(size){
         this.size = size;
-        this.shipCoordinates = [[5,5]];
+        this.shipCoordinates = [[[5,5],'Any']];
         this.misses = [];
-        this.guesses = [];
+        this.guesses = [[3,3]];
         this.carrier = new Ship('carrier',5);
         this.battleship = new Ship('battleship',4);
         this.destroyer = new Ship('destroyer',3);
@@ -61,11 +41,12 @@ class Gameboard{
             'submarine':this.destroyer,
             'ptBoat':this.ptBoat
         }
+        this.currentShip = null;
     }
 
     checkValidity(value,length,direction){
         //Checking that coordinates are on the board.
-        if(value[0] > this.size || value[1] > this.size){
+        if(value[0] > this.size || value[1] > this.size || value[0] < 1 || value[1] < 1){
             return false;
         }
         //Checking that ship doesn't go off the board.
@@ -108,7 +89,7 @@ class Gameboard{
         if(direction == 'up'){
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
-                    if(value[0]== this.shipCoordinates[j][0] && value[1]+i == this.shipCoordinates[j][1]){
+                    if(value[0]== this.shipCoordinates[j][0][0] && value[1]+i == this.shipCoordinates[j][0][1]){
                         collision = true;
                     }
                 }
@@ -117,7 +98,7 @@ class Gameboard{
         else if(direction == 'down'){
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
-                    if(value[0]== this.shipCoordinates[j][0] && value[1]-i == this.shipCoordinates[j][1]){
+                    if(value[0]== this.shipCoordinates[j][0][0] && value[1]-i == this.shipCoordinates[j][0][1]){
                         collision = true;
                     }
                 }
@@ -126,7 +107,7 @@ class Gameboard{
         else if(direction == 'right'){
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
-                    if(value[0]+i == this.shipCoordinates[j][0] && value[1] == this.shipCoordinates[j][1]){
+                    if(value[0]+i == this.shipCoordinates[j][0][0] && value[1] == this.shipCoordinates[j][0][1]){
                         collision = true;
                     }
                 }
@@ -135,7 +116,7 @@ class Gameboard{
         else if(direction == 'left'){
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
-                    if(value[0]-i == this.shipCoordinates[j][0] && value[1] == this.shipCoordinates[j][1]){
+                    if(value[0]-i == this.shipCoordinates[j][0][0] && value[1] == this.shipCoordinates[j][0][1]){
                         collision = true;
                     }
                 }
@@ -144,45 +125,89 @@ class Gameboard{
         return collision;
     }
 
-    placeShip(value,length,direction){
+    placeShip(value,direction){
+        const length = this.currentShip.hitNumber;
         if(this.checkValidity(value,length,direction) == true && this.checkCollision(value,length,direction) == false){
             if(direction == 'up'){
                 for(let i = 0; i < length; i++){
-                    const coordinate = [value[0],value[1]+i];
+                    const coordinate = [[value[0],value[1]+i],this.currentShip.type];
                     this.shipCoordinates.push(coordinate);
                 }
-                //return true;
             }
             else if(direction == 'down'){
                 for(let i = 0; i < length; i++){
-                    const coordinate = [value[0],value[1]-i];
+                    const coordinate = [[value[0],value[1]-i],this.currentShip.type];
                     this.shipCoordinates.push(coordinate);
                 }
-                //return true;
             }
             else if(direction == 'right'){
                 for(let i = 0; i < length; i++){
-                    const coordinate = [value[0]+i,value[1]];
+                    const coordinate = [[value[0]+i,value[1]],this.currentShip.type];
                     this.shipCoordinates.push(coordinate);
                 }
-                //return true;
             }
             else if(direction == 'left'){
                 for(let i = 0; i < length; i++){
-                    const coordinate = [value[0]-i,value[1]];
+                    const coordinate = [[value[0]-i,value[1]],this.currentShip.type];
                     this.shipCoordinates.push(coordinate);
                 }
-                //return true;
             }
         }
         else{
             return false;
         }
     }
+
+    receiveAttack(value){
+        let attack = true;
+        //Checking guesses to see if coordinate has been
+        //guessed before.
+        for(let i = 0; i < this.guesses.length; i++){
+            if(value[0] == this.guesses[i][0] && value[1] == this.guesses[i][1]){
+                attack = false;
+            }
+        }
+        //Check if valid coordinate.
+        if(this.checkValidity(value,1,'up') == false){
+            attack = false;
+        }
+        //Check for a collision.
+        if(this.checkCollision(value,1,'up') == false){
+            attack = false;
+            this.misses.push(value);
+            this.guesses.push(value);
+        }
+        if(attack == true) {
+            //Need a way to get the ship that has been
+            //hit and add to the hit counter.
+            for(let i = 0; i < this.shipCoordinates.length; i++){
+                if(value[0]== this.shipCoordinates[i][0][0] && value[1] == this.shipCoordinates[i][0][1]){
+                    this.ships[this.shipCoordinates[i][1]].currentHits += 1;
+                }
+            };
+            this.guesses.push(value);
+        }
+    }
+
+    setCurrentShip(value){
+        this.currentShip = this.ships[value];
+    }
+
+    shipsSunk(){
+        let allSunk = true;
+        const keys = Object.keys(this.ships);
+        for(let i = 0; i < keys.length; i++){
+            if(this.ships[keys[i]].sunk == false){
+                allSunk = false;
+            }
+        }
+       return allSunk;
+    }
 }
 
+
+
 const gameboard = new Gameboard(10);
-//console.log(gameboard.checkValidity([10,10],5,'up'));
-gameboard.placeShip([5,3],5,'up');
-console.log(gameboard.shipCoordinates);
+//gameboard.setCurrentShip("carrier");
+//console.log(gameboard.guesses);
 module.exports = gameboard;

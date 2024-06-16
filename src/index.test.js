@@ -5,7 +5,9 @@ describe('Testing Validity', ()=> {
     it('Off the board; Both are over', () => {
         expect(gameboard.checkValidity([11,13],5,'up')).toBe(false);
     });
-
+    it('Off the board; Both are under', () => {
+        expect(gameboard.checkValidity([-11,-13],5,'up')).toBe(false);
+    });
     it('Off the board; One is over', () => {
         expect(gameboard.checkValidity([10,13],5,'up')).toBe(false);
     });
@@ -37,7 +39,7 @@ describe('Testing Validity', ()=> {
         expect(gameboard.checkValidity([4,4],5,'left')).toBe(false);
     });
 });
-describe('Testing Validity', ()=> {
+describe('Testing Collisions', ()=> {
     //Depends on a given ship coordinate of [5,5].
     it('Collision Up', () => {
         expect(gameboard.checkCollision([5,1],5,'up')).toBe(true);
@@ -55,9 +57,26 @@ describe('Testing Validity', ()=> {
         expect(gameboard.checkCollision([3,3],5,'up')).toBe(false);
     });
 });
+describe('Testing Hits', ()=> {
+    //Depends on a given ship coordinate of [5,5] and
+    //the carrier's length.
+    it('Already Guessed', () => {
+        expect(gameboard.receiveAttack([3,3])).toBe(false);
+    });
+    it('Invalid Coordinate', () => {
+        expect(gameboard.receiveAttack([11,-3])).toBe(false);
+    });
+    it('Collision - miss', () => {
+        expect(gameboard.receiveAttack([5,3])).toBe(false);
+    });
+    it('Collision - hit', () => {
+        expect(gameboard.receiveAttack([5,5])).toBe(true);
+    });
+});
+
 describe('Testing Ship Placement', ()=> {
     //Depends on a given ship coordinate of [5,5].
-    //Still needs work to get correct.
+    //Test doesn't work.
     it('Place Ship Up', () => {
         expect(gameboard.placeShip([4,1],5,'up')).toBe(true);
     });
