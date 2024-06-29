@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship UI Test</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="source.js" defer></script>
+</head>
+<body>
+    <header>BATTLESHIP</header>
+    <div class = 'main_container'>
+        <div class = 'container' id = 'left_main'>
+            <div class = 'container' id = 'ship_header'><p>SHIPS</p></div>
+            <div class = 'ship_cell'>
+                <p>AIRCRAFT CARRIER</p>
+                <img src="./Images/aircraft_carrier.png" id="carrier" draggable="true" ondragstart="dragstartHandler(event)">
+            </div>
+            <div class = 'ship_cell'>
+                <p>BATTLESHIP</p>
+                <img src="./Images/battleship.png" id="battleship" draggable="true" ondragstart="dragstartHandler(event)">
+            </div>
+            <div class = 'ship_cell'>
+                <p>DESTROYER</p>
+                <img src="./Images/destroyer.png" id="destroyer" draggable="true" ondragstart="dragstartHandler(event)">
+            </div>
+            <div class = 'ship_cell'>
+                <p>SUBMARINE</p>
+                <img src="./Images/submarine.png" id="submarine" draggable="true" ondragstart="dragstartHandler(event)">
+            </div>
+            <div class = 'ship_cell'>
+                <p>PT BOAT</p>
+                <img src="./Images/ptBoat.PNG" id="ptBoat" draggable="true" ondragstart="dragstartHandler(event)">
+            </div>
+            <div class = 'container'><button>START</button></div>
+        </div>
+        <div class = 'container' id = 'gameTable'>
+            <div class = 'container' id ='playerBoard'>
+                <p>PLAYER BOARD</p>
+                <div class = 'gameBoard'>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player1' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player2' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player3' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player4' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player5' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player6' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player7' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player8' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player9' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player10' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player11' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player12' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player13' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player14' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player15' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player16' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player17' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player18' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player19' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player20' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player21' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player22' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player23' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player24' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player25' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player26' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player27' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player28' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player29' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player30' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player31' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player32' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player33' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player34' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player35' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player36' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player37' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player38' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player39' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player40' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player41' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player42' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player43' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player44' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player45' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player46' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player47' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player48' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player49' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player50' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player51' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player52' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player53' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player54' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player55' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player56' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player57' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player58' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player59' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player60' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player61' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player62' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player63' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player64' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player65' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player66' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player67' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player68' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player69' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player70' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player71' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player72' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player73' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player74' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player75' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player76' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player77' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player78' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player79' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player80' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player81' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player82' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player83' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player84' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player85' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player86' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player87' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player88' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player89' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player90' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'playerSquare' id = 'player91' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player92' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player93' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player94' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player95' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player96' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player97' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player98' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player99' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                        <div class = 'playerSquare' id = 'player100' ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+                    </div>
+                </div>
+            </div>
+            <div class = 'container'>
+                <p>COMPUTER BOARD</p>
+                <div class = 'gameBoard' id = 'computerBoard'>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer1'></div>
+                        <div class = 'computerSquare' id = 'computer2'></div>
+                        <div class = 'computerSquare' id = 'computer3'></div>
+                        <div class = 'computerSquare' id = 'computer4'></div>
+                        <div class = 'computerSquare' id = 'computer5'></div>
+                        <div class = 'computerSquare' id = 'computer6'></div>
+                        <div class = 'computerSquare' id = 'computer7'></div>
+                        <div class = 'computerSquare' id = 'computer8'></div>
+                        <div class = 'computerSquare' id = 'computer9'></div>
+                        <div class = 'computerSquare' id = 'computer10'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer11'></div>
+                        <div class = 'computerSquare' id = 'computer12'></div>
+                        <div class = 'computerSquare' id = 'computer13'></div>
+                        <div class = 'computerSquare' id = 'computer14'></div>
+                        <div class = 'computerSquare' id = 'computer15'></div>
+                        <div class = 'computerSquare' id = 'computer16'></div>
+                        <div class = 'computerSquare' id = 'computer17'></div>
+                        <div class = 'computerSquare' id = 'computer18'></div>
+                        <div class = 'computerSquare' id = 'computer19'></div>
+                        <div class = 'computerSquare' id = 'computer20'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer21'></div>
+                        <div class = 'computerSquare' id = 'computer22'></div>
+                        <div class = 'computerSquare' id = 'computer23'></div>
+                        <div class = 'computerSquare' id = 'computer24'></div>
+                        <div class = 'computerSquare' id = 'computer25'></div>
+                        <div class = 'computerSquare' id = 'computer26'></div>
+                        <div class = 'computerSquare' id = 'computer27'></div>
+                        <div class = 'computerSquare' id = 'computer28'></div>
+                        <div class = 'computerSquare' id = 'computer29'></div>
+                        <div class = 'computerSquare' id = 'computer30'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer31'></div>
+                        <div class = 'computerSquare' id = 'computer32'></div>
+                        <div class = 'computerSquare' id = 'computer33'></div>
+                        <div class = 'computerSquare' id = 'computer34'></div>
+                        <div class = 'computerSquare' id = 'computer35'></div>
+                        <div class = 'computerSquare' id = 'computer36'></div>
+                        <div class = 'computerSquare' id = 'computer37'></div>
+                        <div class = 'computerSquare' id = 'computer38'></div>
+                        <div class = 'computerSquare' id = 'computer39'></div>
+                        <div class = 'computerSquare' id = 'computer40'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer41'></div>
+                        <div class = 'computerSquare' id = 'computer42'></div>
+                        <div class = 'computerSquare' id = 'computer43'></div>
+                        <div class = 'computerSquare' id = 'computer44'></div>
+                        <div class = 'computerSquare' id = 'computer45'></div>
+                        <div class = 'computerSquare' id = 'computer46'></div>
+                        <div class = 'computerSquare' id = 'computer47'></div>
+                        <div class = 'computerSquare' id = 'computer48'></div>
+                        <div class = 'computerSquare' id = 'computer49'></div>
+                        <div class = 'computerSquare' id = 'computer50'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer51'></div>
+                        <div class = 'computerSquare' id = 'computer52'></div>
+                        <div class = 'computerSquare' id = 'computer53'></div>
+                        <div class = 'computerSquare' id = 'computer54'></div>
+                        <div class = 'computerSquare' id = 'computer55'></div>
+                        <div class = 'computerSquare' id = 'computer56'></div>
+                        <div class = 'computerSquare' id = 'computer57'></div>
+                        <div class = 'computerSquare' id = 'computer58'></div>
+                        <div class = 'computerSquare' id = 'computer59'></div>
+                        <div class = 'computerSquare' id = 'computer60'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer61'></div>
+                        <div class = 'computerSquare' id = 'computer62'></div>
+                        <div class = 'computerSquare' id = 'computer63'></div>
+                        <div class = 'computerSquare' id = 'computer64'></div>
+                        <div class = 'computerSquare' id = 'computer65'></div>
+                        <div class = 'computerSquare' id = 'computer66'></div>
+                        <div class = 'computerSquare' id = 'computer67'></div>
+                        <div class = 'computerSquare' id = 'computer68'></div>
+                        <div class = 'computerSquare' id = 'computer69'></div>
+                        <div class = 'computerSquare' id = 'computer70'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer71'></div>
+                        <div class = 'computerSquare' id = 'computer72'></div>
+                        <div class = 'computerSquare' id = 'computer73'></div>
+                        <div class = 'computerSquare' id = 'computer74'></div>
+                        <div class = 'computerSquare' id = 'computer75'></div>
+                        <div class = 'computerSquare' id = 'computer76'></div>
+                        <div class = 'computerSquare' id = 'computer77'></div>
+                        <div class = 'computerSquare' id = 'computer78'></div>
+                        <div class = 'computerSquare' id = 'computer79'></div>
+                        <div class = 'computerSquare' id = 'computer80'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer81'></div>
+                        <div class = 'computerSquare' id = 'computer82'></div>
+                        <div class = 'computerSquare' id = 'computer83'></div>
+                        <div class = 'computerSquare' id = 'computer84'></div>
+                        <div class = 'computerSquare' id = 'computer85'></div>
+                        <div class = 'computerSquare' id = 'computer86'></div>
+                        <div class = 'computerSquare' id = 'computer87'></div>
+                        <div class = 'computerSquare' id = 'computer88'></div>
+                        <div class = 'computerSquare' id = 'computer89'></div>
+                        <div class = 'computerSquare' id = 'computer90'></div>
+                    </div>
+                    <div class = 'boardRow'>
+                        <div class = 'computerSquare' id = 'computer91'></div>
+                        <div class = 'computerSquare' id = 'computer92'></div>
+                        <div class = 'computerSquare' id = 'computer93'></div>
+                        <div class = 'computerSquare' id = 'computer94'></div>
+                        <div class = 'computerSquare' id = 'computer95'></div>
+                        <div class = 'computerSquare' id = 'computer96'></div>
+                        <div class = 'computerSquare' id = 'computer97'></div>
+                        <div class = 'computerSquare' id = 'computer98'></div>
+                        <div class = 'computerSquare' id = 'computer99'></div>
+                        <div class = 'computerSquare' id = 'computer100'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

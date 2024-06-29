@@ -1,0 +1,139 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body{
+    background-color: papayawhip;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr 4fr;
+}
+
+.main_container {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+.container {
+    display: grid;
+    border: 2px solid black;
+}
+
+#left_main {
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+#carrier {
+    height: 58px;
+    width: 316px;
+    position: absolute;
+    z-index: 1;
+} 
+
+#battleship {
+    height: 58px;
+    width: 250px;
+    position: absolute;
+    z-index: 1;
+}
+
+#destroyer {
+    height: 58px;
+    width: 188px;
+    position: absolute;
+    z-index: 1;
+}
+
+#submarine {
+    height: 58px;
+    width: 188px;
+    position: absolute;
+    z-index: 1;
+}
+
+#ptBoat {
+    /* For checking the sizes of the boats.
+    position: absolute;
+    left: 516px;
+    top: 480px; */
+    height: 58px;
+    width: 124px;
+    position: absolute;
+    z-index: 1;
+}
+
+#ship_header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 108px;
+    letter-spacing: 8px;
+}
+
+header {
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 216px;
+    letter-spacing: 32px;
+    border:0px;
+}
+
+.ship_cell {
+    border: 2px solid black;
+    font-size: xx-large;
+}
+
+#gameTable {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: xx-large;
+}
+
+#gameTable p{
+    padding: 8px;
+    text-align: center;
+}
+
+#gameTable .container{
+    display: block;
+}
+
+.gameBoard{
+    display: grid;
+    height: 100%;
+    padding: 0px 64px 64px 64px;
+    grid-template-rows: auto;
+}
+
+.boardRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.playerSquare, .computerSquare {
+    border: 2px solid black;
+    background-color: rgb(50, 130, 235);
+}
+
+.playerSquare:hover {
+    background-color: gray;
+}
+
+/* .playerSquare {
+    height: 58px;
+    width: 62.5px;
+    overflow: visible;
+} */
+
+.computerSquare:hover {
+    background-color: rgba(201, 19, 19, 0.33);
+}
+
+button {
+    font-size: xx-large;
+}

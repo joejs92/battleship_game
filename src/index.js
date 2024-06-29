@@ -1,3 +1,5 @@
+import './style.css';
+
 class Ship{
     constructor(type,hitNumber){
         this.type = type;
@@ -209,16 +211,9 @@ class Gameboard{
 class Player{
     constructor(playerName){
         this.playerName = playerName;
-        this.playerGameboard = new Gameboard(10);
+        this.playerGameboard = new Gameboard(10,playerName);
     };
-    /*I'm not entirely sure what to put into this class.
-    The guide about the project is vague at this part. 
-    ***Note to future-self in case I get weird ideas:
-    Sending an attack isn't necessary. Both player's 
-    boards will be displayed, so clicking on the other 
-    player's board will just have the other player 
-    receive an attack. Duh. The big purpose of this class
-    may be just to make gameboard display easier. For now
+    /*For now
     just assume that the opponent is the computer. In the
     future it can be modified for two players.***
     */
