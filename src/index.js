@@ -223,7 +223,27 @@ class Player{
     };
 }
 
+
+
 const gameboard = new Gameboard(10,"computer");
 //gameboard.setCurrentShip("carrier");
 //console.log(gameboard.guesses);
-module.exports = gameboard;
+//module.exports = gameboard;
+/*
+Things left to do on the project.
+
+2. Get the start button to work. When pressed it will 
+check that 1) All of the ships have been placed on the
+player board, and 2) all of the ships have valid 
+placement (not going off the board or overlapping). If
+placements are valid it will take the values and put
+them into the gameboard.
+3. Create the game loop. 
+4. Add a JS file to handle the CSS changes made by the
+game loop.
+5. Make sure everything is hooked up; test.
+
+I'm also having trouble getting the drag code to work in
+the dist bundle. All in this 'todo' list applies to the
+code in src. 
+*/

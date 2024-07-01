@@ -3,10 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: {
+    index: './src/index.js',
+    drag: './src/drag.js',
+  },
   devtool: 'inline-source-map',
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
 
@@ -15,7 +18,7 @@ module.exports = {
       template: './src/index.html',
       filename: 'index.html',
       inject: 'head',
-      scriptLoading: 'defer'
+      /* scriptLoading: 'defer' */
     })
   ],
 
