@@ -1,3 +1,4 @@
+let shipsPlacement = [];
 let pivotPoint = '';
 
 function dragstartHandler(ev) {
@@ -42,9 +43,28 @@ function setDirection(direction,ev) {
     }
 }
 
+function checkDups(shipInfo){
+    for(let i = 0; i < shipsPlacement.length; i++) {
+        if(shipInfo[0] == shipsPlacement[i][0]) {
+            shipsPlacement[i] = shipInfo;
+            return true;
+        }
+    }
+    return false;
+}
+
+function getCoordinates(targetId) {
+    const square = targetId.id;
+    const regex = /([0-9])+/g;
+    const regexMatch = square.match(regex);
+    const coordinates = [Number(regexMatch[0]),Number(regexMatch[1])];
+    return coordinates;
+}
+
 function getDirection(ev) {
     const direction = prompt("Pick your ship's orientation (up, down, left, right).");
     setDirection(direction,ev);
+    return direction;
 }
 
 function dragoverHandler(ev) {
@@ -56,5 +76,11 @@ function dropHandler(ev) {
     ev.preventDefault();
     const data = ev.dataTransfer.getData('text');
     ev.target.appendChild(document.getElementById(data));
-    getDirection(ev);
-}
+    const direction = getDirection(ev);
+    const coordinates = getCoordinates(ev.target); 
+    shipInfo = [data,coordinates,direction];
+    if(checkDups(shipInfo) == false) {
+        shipsPlacement.push(shipInfo);
+    }
+} ;
+export {shipsPlacement};

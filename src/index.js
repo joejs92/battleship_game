@@ -1,4 +1,5 @@
-import './style.css';
+//import './style.css';
+//import {playerShipsPlacement} from './drag.js';
 
 class Ship{
     constructor(type,hitNumber){
@@ -41,7 +42,7 @@ class Gameboard{
             'carrier':this.carrier,
             'battleship':this.battleship,
             'destroyer':this.destroyer,
-            'submarine':this.destroyer,
+            'submarine':this.submarine,
             'ptBoat':this.ptBoat
         }
         this.currentShip = null;
@@ -55,6 +56,7 @@ class Gameboard{
         //Checking that ship doesn't go off the board.
         if(direction == 'up'){
             if(value[1] + length -1 > this.size){
+                window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -63,6 +65,7 @@ class Gameboard{
         }
         else if(direction == 'down'){
             if(value[1] - length +1 < 1){
+                window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -71,6 +74,7 @@ class Gameboard{
         }
         else if(direction == 'right'){
             if(value[0] + length -1 > this.size){
+                window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -79,6 +83,7 @@ class Gameboard{
         }
         else if(direction == 'left'){
             if(value[0] - length +1 < 1){
+                window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -93,6 +98,7 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]== this.shipCoordinates[j][0][0] && value[1]+i == this.shipCoordinates[j][0][1]){
+                        window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -102,6 +108,7 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]== this.shipCoordinates[j][0][0] && value[1]-i == this.shipCoordinates[j][0][1]){
+                        window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -111,6 +118,7 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]+i == this.shipCoordinates[j][0][0] && value[1] == this.shipCoordinates[j][0][1]){
+                        window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -120,6 +128,7 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]-i == this.shipCoordinates[j][0][0] && value[1] == this.shipCoordinates[j][0][1]){
+                        window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -223,21 +232,14 @@ class Player{
     };
 }
 
-
-
-const gameboard = new Gameboard(10,"computer");
+//const gameboard = new Gameboard(10,"computer");
 //gameboard.setCurrentShip("carrier");
 //console.log(gameboard.guesses);
 //module.exports = gameboard;
 /*
 Things left to do on the project.
 
-2. Get the start button to work. When pressed it will 
-check that 1) All of the ships have been placed on the
-player board, and 2) all of the ships have valid 
-placement (not going off the board or overlapping). If
-placements are valid it will take the values and put
-them into the gameboard.
+**Disable drag/drop during game loop.**
 3. Create the game loop. 
 4. Add a JS file to handle the CSS changes made by the
 game loop.
@@ -245,5 +247,110 @@ game loop.
 
 I'm also having trouble getting the drag code to work in
 the dist bundle. All in this 'todo' list applies to the
-code in src. 
+code in src. I just merged 'drag' and 'index' because
+getting the import/export to work was too complicated and
+wasn't working no matter what I did. Seems to be working
+fine after the merge. Will have to look into this more
+later because having everything in one file will be
+messy.
 */
+
+let shipsPlacement = [];
+let pivotPoint = '';
+
+function dragstartHandler(ev) {
+    //Add the target element's ID to the data 
+    //transfer object.
+    ev.dataTransfer.setData('text',ev.target.id);
+    ev.dataTransfer.effectAllowed ="move";
+    if(ev.target.id == 'carrier'){
+        pivotPoint = '10%';
+    }
+    else if(ev.target.id == 'battleship'){
+        pivotPoint = '12.5%';
+    }
+    if(ev.target.id == 'destroyer' || ev.target.id == 'submarine'){
+        pivotPoint = '16.65%';
+    }
+    else if(ev.target.id == 'ptBoat'){
+        pivotPoint = '25%';
+    }
+}
+
+function setDirection(direction,ev) {
+    const data = ev.dataTransfer.getData('text');
+    if(direction == 'up'){
+        document.getElementById(data).style.transformOrigin =  `${pivotPoint} center`;
+        document.getElementById(data).style.transform = 'rotateZ(-90deg)';             }
+    else if(direction == 'down'){
+        document.getElementById(data).style.transformOrigin =  `${pivotPoint} center`;
+        document.getElementById(data).style.transform = 'rotateZ(90deg)';
+    }
+    else if(direction == 'left'){
+        document.getElementById(data).style.transformOrigin =  `${pivotPoint} center`;
+        document.getElementById(data).style.transform = 'rotateY(180deg)';
+    }
+    else if(direction == 'right'){
+        document.getElementById(data).style.transformOrigin =  `${pivotPoint} center`;
+        document.getElementById(data).style.transform = 'rotateY(0deg)';
+    }
+    else {
+        window.alert("I said choose either up, down, left, or right. Don't be stupid. Go type one of the options I gave you.");
+        return getDirection(ev);
+    }
+}
+
+function checkDups(shipInfo){
+    for(let i = 0; i < shipsPlacement.length; i++) {
+        if(shipInfo[0] == shipsPlacement[i][0]) {
+            shipsPlacement[i] = shipInfo;
+            return true;
+        }
+    }
+    return false;
+}
+
+function getCoordinates(targetId) {
+    const square = targetId.id;
+    const regex = /([0-9])+/g;
+    const regexMatch = square.match(regex);
+    const coordinates = [Number(regexMatch[0]),Number(regexMatch[1])];
+    return coordinates;
+}
+
+function getDirection(ev) {
+    const direction = prompt("Pick your ship's orientation (up, down, left, right).");
+    setDirection(direction,ev);
+    return direction;
+}
+
+function dragoverHandler(ev) {
+    ev.preventDefault();
+    //put square highlight here.
+    ev.dataTransfer.dropEffect = "move";
+}
+function dropHandler(ev) {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData('text');
+    ev.target.appendChild(document.getElementById(data));
+    const direction = getDirection(ev);
+    const coordinates = getCoordinates(ev.target); 
+    shipInfo = [data,coordinates,direction];
+    if(checkDups(shipInfo) == false) {
+        shipsPlacement.push(shipInfo);
+    }
+} ;
+
+const player = new Player("player");
+const div = document.querySelector('div');
+div.addEventListener('click', event => {
+    const target = event.target;
+    if(target.tagName == 'BUTTON') {
+        if(target.innerText == 'START'){
+            for(let i = 0; i < shipsPlacement.length; i++) {
+                player.placePlayerShip(shipsPlacement[i][0],shipsPlacement[i][1],shipsPlacement[i][2]);
+            }  
+        };
+        console.log(player.playerGameboard.shipCoordinates);
+    };
+});
