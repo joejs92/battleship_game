@@ -56,7 +56,7 @@ class Gameboard{
         //Checking that ship doesn't go off the board.
         if(direction == 'up'){
             if(value[1] + length -1 > this.size){
-                window.alert("Invalid Ship Placement");
+                //window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -65,7 +65,7 @@ class Gameboard{
         }
         else if(direction == 'down'){
             if(value[1] - length +1 < 1){
-                window.alert("Invalid Ship Placement");
+                //window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -74,7 +74,7 @@ class Gameboard{
         }
         else if(direction == 'right'){
             if(value[0] + length -1 > this.size){
-                window.alert("Invalid Ship Placement");
+                //window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -83,7 +83,7 @@ class Gameboard{
         }
         else if(direction == 'left'){
             if(value[0] - length +1 < 1){
-                window.alert("Invalid Ship Placement");
+                //window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -98,7 +98,7 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]== this.shipCoordinates[j][0][0] && value[1]+i == this.shipCoordinates[j][0][1]){
-                        window.alert("Ship Collision");
+                        //window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -108,7 +108,7 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]== this.shipCoordinates[j][0][0] && value[1]-i == this.shipCoordinates[j][0][1]){
-                        window.alert("Ship Collision");
+                        //window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -118,7 +118,7 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]+i == this.shipCoordinates[j][0][0] && value[1] == this.shipCoordinates[j][0][1]){
-                        window.alert("Ship Collision");
+                        //window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -128,7 +128,7 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]-i == this.shipCoordinates[j][0][0] && value[1] == this.shipCoordinates[j][0][1]){
-                        window.alert("Ship Collision");
+                        //window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -198,7 +198,8 @@ class Gameboard{
                 }
             };
             this.guesses.push(value);
-        }
+        };
+        return attack;
     }
 
     setCurrentShip(value){
@@ -215,6 +216,31 @@ class Gameboard{
         }
        return allSunk;
     }
+
+    getRandomIntInclusive(min, max) {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+    }
+
+    randomPlacement(length){
+        const directions = ["up","down","left","right"];
+        let placement = [];
+        const chosenDirection = directions[this.getRandomIntInclusive(0, 3)];
+        if(chosenDirection == "up"){
+            placement = [[this.getRandomIntInclusive(1, 10),this.getRandomIntInclusive(1, 10-length)],chosenDirection];
+        }
+        else if(chosenDirection == "down"){
+            placement = [[this.getRandomIntInclusive(1, 10),this.getRandomIntInclusive(1+length, 10)],chosenDirection];
+        }
+        else if(chosenDirection == "left"){
+            placement = [[this.getRandomIntInclusive(1+length, 10),this.getRandomIntInclusive(1, 10)],chosenDirection];
+        }
+        else if(chosenDirection == "right"){
+            placement = [[this.getRandomIntInclusive(1, 10-length),this.getRandomIntInclusive(1+length, 10)],chosenDirection];
+        }
+        return placement;
+    }
 }
 
 class Player{
@@ -230,7 +256,20 @@ class Player{
         this.playerGameboard.setCurrentShip(shipType);
         this.playerGameboard.placeShip(coordinate,direction);
     };
-}
+
+    placeShipsRandomly(){
+        for(const key of Object.entries(this.playerGameboard.ships)){
+            let placed = false;
+             while(placed == false){
+                let trialCoordinates = this.playerGameboard.randomPlacement(key[1].hitNumber);
+                if(this.playerGameboard.checkCollision(trialCoordinates[0],key[1].hitNumber,trialCoordinates[1]) == false){
+                    this.placePlayerShip(key[0],trialCoordinates[0],trialCoordinates[1]);
+                    placed = true;
+                };
+            };
+        };
+    };
+};
 
 //const gameboard = new Gameboard(10,"computer");
 //gameboard.setCurrentShip("carrier");
@@ -240,10 +279,6 @@ class Player{
 Things left to do on the project.
 
 **Disable drag/drop during game loop.**
-3. Create the game loop. 
-4. Add a JS file to handle the CSS changes made by the
-game loop.
-5. Make sure everything is hooked up; test.
 
 I'm also having trouble getting the drag code to work in
 the dist bundle. All in this 'todo' list applies to the
@@ -338,8 +373,89 @@ function dropHandler(ev) {
     shipInfo = [data,coordinates,direction];
     if(checkDups(shipInfo) == false) {
         shipsPlacement.push(shipInfo);
+    };
+};
+
+function makeShotBox(hitMiss,Id){
+    const box = document.createElement('div');
+    box.setAttribute('class','box');
+    box.style.width = '62px';
+    box.style.height = '58px';
+    box.style.position = 'absolute';
+    box.style.zIndex = 2;
+    if(hitMiss == 'hit') {
+        box.style.backgroundColor = 'red';
     }
-} ;
+    else{
+        box.style.backgroundColor = 'white'
+    };
+    box.style.opacity = '0.33';
+    const shootersBox = document.getElementById(Id);
+    shootersBox.appendChild(box);
+};
+
+function gameloop(player,computerPlayer){
+    let isAWinner = false;
+    let attackCoordinate = [];
+    let currentPlayer = computerPlayer;
+    let opponent = player;
+    console.log(currentPlayer);
+    const buttons = document.querySelectorAll('.computerSquare');
+    while(true){
+        if(currentPlayer == computerPlayer){
+            attackCoordinate = currentPlayer.playerGameboard.randomPlacement(0)[0];
+            const shot = opponent.playerGameboard.receiveAttack(attackCoordinate);
+            const playerSquareId = `player[${attackCoordinate}]`;
+            console.log(playerSquareId);
+            if(shot == true){
+                window.alert("HIT!");
+                makeShotBox('hit',playerSquareId);
+                if(opponent.playerGameboard.shipsSunk() == true){
+                    isAWinner = true;
+                    return window.alert("You LOSE!");
+                }
+                else {
+                    currentPlayer = player;
+                    opponent = computerPlayer;
+                }
+            }
+            else{
+                window.alert("MISS!");
+                makeShotBox('miss',playerSquareId);
+                currentPlayer = player;
+                opponent = computerPlayer;
+            }
+        }
+        else{
+            buttons.forEach((button) => {
+                button.addEventListener('click',() => {
+                    playerSelection = button.id;
+                    attackCoordinate = getCoordinates(playerSelection);
+                    const shot = opponent.playerGameboard.receiveAttack(attackCoordinate);
+                    console.log(playerSelection);
+                    if(shot == true){
+                        window.alert("HIT!");
+                        makeShotBox('hit',playerSelection);
+                        if(opponent.playerGameboard.shipsSunk() == true){
+                            isAWinner = true;
+                            return window.alert("You WIN!");
+                        }
+                        else {
+                            currentPlayer = computerPlayer;
+                            opponent = player;
+                        }
+                    }
+                    else{
+                        window.alert("MISS!");
+                        makeShotBox('miss',playerSelection);
+                        currentPlayer = computerPlayer;
+                        opponent = player;
+                    }
+                });
+            });
+        }
+    };
+};
 
 const player = new Player("player");
 const div = document.querySelector('div');
@@ -349,8 +465,12 @@ div.addEventListener('click', event => {
         if(target.innerText == 'START'){
             for(let i = 0; i < shipsPlacement.length; i++) {
                 player.placePlayerShip(shipsPlacement[i][0],shipsPlacement[i][1],shipsPlacement[i][2]);
-            }  
+            }
+            target.innerText = '';
+            const computerPlayer = new Player("computer");
+            computerPlayer.placeShipsRandomly();
+            gameloop(player,computerPlayer);  
         };
-        console.log(player.playerGameboard.shipCoordinates);
+        //console.log(player.playerGameboard.shipCoordinates);
     };
 });
