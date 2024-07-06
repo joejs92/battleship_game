@@ -56,7 +56,6 @@ class Gameboard{
         //Checking that ship doesn't go off the board.
         if(direction == 'up'){
             if(value[1] + length -1 > this.size){
-                //window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -65,7 +64,6 @@ class Gameboard{
         }
         else if(direction == 'down'){
             if(value[1] - length +1 < 1){
-                //window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -74,7 +72,6 @@ class Gameboard{
         }
         else if(direction == 'right'){
             if(value[0] + length -1 > this.size){
-                //window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -83,7 +80,6 @@ class Gameboard{
         }
         else if(direction == 'left'){
             if(value[0] - length +1 < 1){
-                //window.alert("Invalid Ship Placement");
                 return false;
             }
             else{
@@ -98,7 +94,6 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]== this.shipCoordinates[j][0][0] && value[1]+i == this.shipCoordinates[j][0][1]){
-                        //window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -108,7 +103,6 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]== this.shipCoordinates[j][0][0] && value[1]-i == this.shipCoordinates[j][0][1]){
-                        //window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -118,7 +112,6 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]+i == this.shipCoordinates[j][0][0] && value[1] == this.shipCoordinates[j][0][1]){
-                        //window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -128,7 +121,6 @@ class Gameboard{
             for(let i = 0; i < length; i++){
                 for(let j = 0; j < this.shipCoordinates.length; j++){
                     if(value[0]-i == this.shipCoordinates[j][0][0] && value[1] == this.shipCoordinates[j][0][1]){
-                        //window.alert("Ship Collision");
                         collision = true;
                     }
                 }
@@ -171,30 +163,33 @@ class Gameboard{
     }
 
     receiveAttack(value){
-        let attack = true;
+        let attack = 'true';
         //Checking guesses to see if coordinate has been
         //guessed before.
         for(let i = 0; i < this.guesses.length; i++){
             if(value[0] == this.guesses[i][0] && value[1] == this.guesses[i][1]){
-                attack = false;
+                attack = "guessed";
             }
         }
         //Check if valid coordinate.
         if(this.checkValidity(value,1,'up') == false){
-            attack = false;
+            attack = "invalid";
         }
-        //Check for a collision.
-        if(this.checkCollision(value,1,'up') == false){
-            attack = false;
+        //Check for a miss. A miss means attack = false
+        if(this.checkCollision(value,1,'up') == false && attack != 'guessed'){
+            attack = 'false';
             this.misses.push(value);
             this.guesses.push(value);
         }
-        if(attack == true) {
+        if(attack == 'true') {
             //Should have an event notification to show
             //either hit or miss.
             for(let i = 0; i < this.shipCoordinates.length; i++){
                 if(value[0]== this.shipCoordinates[i][0][0] && value[1] == this.shipCoordinates[i][0][1]){
                     this.ships[this.shipCoordinates[i][1]].currentHits += 1;
+                    if(this.ships[this.shipCoordinates[i][1]].currentHits == this.ships[this.shipCoordinates[i][1]].hitNumber){
+                        this.ships[this.shipCoordinates[i][1]].sunk = true;
+                    }
                 }
             };
             this.guesses.push(value);
@@ -277,8 +272,14 @@ class Player{
 //module.exports = gameboard;
 /*
 Things left to do on the project.
-
-**Disable drag/drop during game loop.**
+1. Refactor
+2. Deny drag and drop after game starts.
+3. Notifications of misplaced ships to player.
+4. Making sure the gameloop actually ends when the game
+does.
+5. Aesthetic improvements. It looks like poo now.
+6. Bundle everything into dist successfully.
+7. Get modules to work.
 
 I'm also having trouble getting the drag code to work in
 the dist bundle. All in this 'todo' list applies to the
@@ -287,7 +288,14 @@ getting the import/export to work was too complicated and
 wasn't working no matter what I did. Seems to be working
 fine after the merge. Will have to look into this more
 later because having everything in one file will be
-messy.
+messy. Right now everything works fine if you don't go
+out of your way to break the game. If you play fair and
+sensibly, it works. Getting the kinks out is a job for
+future me. It turns out the problem I was having with
+the receiveAttack function was a logic error on my part.
+the following if statements would undo the conditional
+logic done by the earlier ones. Oops. Now I know for the
+future to be more careful.
 */
 
 let shipsPlacement = [];
@@ -346,7 +354,13 @@ function checkDups(shipInfo){
 }
 
 function getCoordinates(targetId) {
-    const square = targetId.id;
+    let square = null;
+    if(typeof(targetId)=='string'){
+        square = targetId;
+    }
+    else{
+        square = targetId.id;
+    }
     const regex = /([0-9])+/g;
     const regexMatch = square.match(regex);
     const coordinates = [Number(regexMatch[0]),Number(regexMatch[1])];
@@ -361,7 +375,6 @@ function getDirection(ev) {
 
 function dragoverHandler(ev) {
     ev.preventDefault();
-    //put square highlight here.
     ev.dataTransfer.dropEffect = "move";
 }
 function dropHandler(ev) {
@@ -389,73 +402,81 @@ function makeShotBox(hitMiss,Id){
     else{
         box.style.backgroundColor = 'white'
     };
-    box.style.opacity = '0.33';
-    const shootersBox = document.getElementById(Id);
-    shootersBox.appendChild(box);
+    box.style.opacity = '0.5';
+    return box;
+};
+
+function computerTurn(player,computerPlayer){
+    let attackCoordinate = null;
+    let validShot = false;
+    let shot = null;
+    while(validShot == false){
+        attackCoordinate = computerPlayer.playerGameboard.randomPlacement(0)[0];
+        shot = player.playerGameboard.receiveAttack(attackCoordinate);
+        if(shot != 'guessed'){
+            validShot = true;
+        }
+    };
+    const playerSquareId = `player[${attackCoordinate}]`;
+    const shootersBox = document.getElementById(playerSquareId);
+    if(shot == 'true'){
+        window.alert("HIT!");
+        const hitBox = makeShotBox('hit',playerSquareId);
+        shootersBox.appendChild(hitBox);
+    }
+    else if(shot == 'false'){
+        window.alert("MISS!");
+        const hitBox = makeShotBox('miss',playerSquareId);
+        shootersBox.appendChild(hitBox);
+    }
+};
+
+function playerTurn(player,computerPlayer){
+    attackCoordinate = getCoordinates(playerSelection);
+    const nub = false;
+    const shot = computerPlayer.playerGameboard.receiveAttack(attackCoordinate);
+    console.log(shot);
+    console.log(nub);
+    const computerSquareId = `computer[${attackCoordinate}]`;
+    const shootersBox = document.getElementById(computerSquareId);
+    if(shot == 'true'){
+        window.alert("HIT!");
+        const hitBox = makeShotBox('hit',playerSelection);
+        shootersBox.appendChild(hitBox);
+        }
+    else if(shot == 'false'){
+        window.alert("MISS!");
+        const hitBox = makeShotBox('miss',playerSelection);
+        shootersBox.appendChild(hitBox);
+    }
+    else if(shot == 'guessed'){
+        window.alert("You already guessed that one, stupid.");
+    }
 };
 
 function gameloop(player,computerPlayer){
-    let isAWinner = false;
-    let attackCoordinate = [];
-    let currentPlayer = computerPlayer;
-    let opponent = player;
-    console.log(currentPlayer);
+    let hasWon = false;
     const buttons = document.querySelectorAll('.computerSquare');
-    while(true){
-        if(currentPlayer == computerPlayer){
-            attackCoordinate = currentPlayer.playerGameboard.randomPlacement(0)[0];
-            const shot = opponent.playerGameboard.receiveAttack(attackCoordinate);
-            const playerSquareId = `player[${attackCoordinate}]`;
-            console.log(playerSquareId);
-            if(shot == true){
-                window.alert("HIT!");
-                makeShotBox('hit',playerSquareId);
-                if(opponent.playerGameboard.shipsSunk() == true){
-                    isAWinner = true;
-                    return window.alert("You LOSE!");
+    buttons.forEach((button) => {
+        button.addEventListener('click',() => {
+            playerSelection = button.id;
+            if(hasWon == false){
+                playerTurn(player,computerPlayer);
+                if(computerPlayer.playerGameboard.shipsSunk() == true){
+                    hasWon = true;
+                    return window.prompt("YOU WIN! Play again(Y/N)?");
                 }
-                else {
-                    currentPlayer = player;
-                    opponent = computerPlayer;
+            };
+            if(hasWon == false){
+                computerTurn(player,computerPlayer);
+                if(player.playerGameboard.shipsSunk() == true){
+                    hasWon = true;
+                    return window.prompt("YOU LOSE! Play again(Y/N)?");
                 }
-            }
-            else{
-                window.alert("MISS!");
-                makeShotBox('miss',playerSquareId);
-                currentPlayer = player;
-                opponent = computerPlayer;
-            }
-        }
-        else{
-            buttons.forEach((button) => {
-                button.addEventListener('click',() => {
-                    playerSelection = button.id;
-                    attackCoordinate = getCoordinates(playerSelection);
-                    const shot = opponent.playerGameboard.receiveAttack(attackCoordinate);
-                    console.log(playerSelection);
-                    if(shot == true){
-                        window.alert("HIT!");
-                        makeShotBox('hit',playerSelection);
-                        if(opponent.playerGameboard.shipsSunk() == true){
-                            isAWinner = true;
-                            return window.alert("You WIN!");
-                        }
-                        else {
-                            currentPlayer = computerPlayer;
-                            opponent = player;
-                        }
-                    }
-                    else{
-                        window.alert("MISS!");
-                        makeShotBox('miss',playerSelection);
-                        currentPlayer = computerPlayer;
-                        opponent = player;
-                    }
-                });
-            });
-        }
-    };
-};
+            };
+        });
+    });
+}
 
 const player = new Player("player");
 const div = document.querySelector('div');
@@ -469,8 +490,7 @@ div.addEventListener('click', event => {
             target.innerText = '';
             const computerPlayer = new Player("computer");
             computerPlayer.placeShipsRandomly();
-            gameloop(player,computerPlayer);  
+            gameloop(player,computerPlayer);
         };
-        //console.log(player.playerGameboard.shipCoordinates);
     };
 });
